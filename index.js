@@ -27,88 +27,19 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-app.post('/create', async (req, res) => {
-    try{
-        const {body: movie } = req;
-        const moviesDB = db.collection('movies');   
-        const { _path: { sengments } } = await moviesDB.add(movie);
-        const id = sengments[1];
-        res.send({
-            status: 200,
-            id
-        });
-    }catch (error){
-        res.send(error);
-
-    }
-});
+app.post('/create-movie');
 
 //READ
-app.get('/get-movie/:id', async (req, res) => {
-    try {
-        const {params : { id }} = req;
-        const moviesDB = db.collection('movies').doc(id);
-        const { _fieldsProto : { time, author, name, rating }} = await moviesDB.get();
-        res.send({
-            status: 200,
-            time: time.stringValue,
-            author: author.stringValue,
-            name: name.stringValue,
-            rating: rating.stringValue
-        })
-    }catch(error){
-        res.send(error);
-    }
-})
+app.get('/get-movie/:id')
 
 //DELETE
-app.delete('/delete-movie/:id', async (req, res) => {
-    try {
-        const { params : { id }} = req;
-        const movieDB = db.collection('movies').doc(id);
-        await movieDB.delete();
-        res.send({
-            status: 200
-        });
-    }catch(error){
-        res.send(error);
-    }
-});
+app.delete('/delete-movie/:id');
 
 //UPDATE
-app.put('/update-movie', async (req, res) => {
-    try{
-        const {body: movie } = req;
-        const { id, time, author, name, rating } = movie;
-        const movieDB = db.collection('movies').doc(id);   
-        const resp = await movieDB.update({
-            name,
-            time,
-            rating,
-            author
-        });
-        res.send({
-            status: 200,
-            id
-        });
-    }catch (error){
-        res.send(error);
-
-    }
-});
+app.put('/update-movie');
 
 //GET MOVIES
-app.get('/get-movies', async (req, res) => {
-    try {
-        const moviesDB = await db.collection('movies').get();
-        const resp = moviesDB.docs.map(doc => doc.data());
-        res.send({
-            resp
-        })
-    }catch(error){
-        res.send(error);
-    }
-})
+app.get('/get-movies')
 
 //Diciendole a la app que awante por nuevas llamadas y duerma cuando nadie llegue
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
