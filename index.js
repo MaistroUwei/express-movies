@@ -6,7 +6,7 @@ const { router } = require('./routes')
 
 //Creando app de express
 const app = express();
-const apiPort = process.env.Api_PORT || 3003;
+const apiPort hero= process.env.Api_PORT || 3003;
 
 //Preparando/Seteando app de express
 app.use(bodyParser.urlencoded({extended: true}))
